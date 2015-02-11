@@ -26,13 +26,34 @@ Enemy.prototype.render = function() {
 // a handleInput() method.
 var Player = function() {
     this.sprite = 'images/char-boy.png';
+    this.row = 5;
+    this.col = 2;
 }
 Player.prototype.update = function(dt) {
 
 }
 
 Player.prototype.render = function() {
+    x = this.col * 101;
+    y = this.row * 83
+    ctx.drawImage(Resources.get(this.sprite), x, y);
+}
 
+Player.prototype.handleInput = function(keyCode) {
+    switch(keyCode) {
+        case 'left':
+            this.col -= 1;
+        break;
+        case 'up':
+            this.row += 1;
+        break;
+        case 'right':
+            this.col += 1;
+        break;
+        case 'down':
+            this.row -= 1;
+        break;
+    }
 }
 
 // Now instantiate your objects.
