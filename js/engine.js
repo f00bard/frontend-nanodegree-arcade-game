@@ -80,7 +80,7 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        // checkCollisions();
+        checkCollisions();
     }
 
     /* This is called by the update function  and loops through all of the
@@ -95,6 +95,20 @@ var Engine = (function(global) {
             enemy.update(dt);
         });
         player.update();
+    }
+
+    /*  Check for collisions between enemies and player.  Using a rectangular
+     *  bounding box which isn't terribly accurate but is effective enough.
+     */
+    function checkCollisions() {
+        allEnemies.forEach(function(enemy) {
+            if (player.x < enemy.x+enemy.width &&
+                player.x + player.width > enemy.x &&
+                player.y < enemy.y+enemy.height &&
+                player.y + player.height > enemy.y) {
+                console.log("Collision! Player ("+player.x+", "+player.y+") Enemy ("+enemy.x+", "+enemy.y+")");
+            }
+        });
     }
 
     /* This function initially draws the "game level", it will then call

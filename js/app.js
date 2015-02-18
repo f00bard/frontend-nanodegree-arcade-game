@@ -1,11 +1,38 @@
 // Enemies our player must avoid
-var Enemy = function() {
+var Enemy = function(num) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
 
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
+
+    // Width/height for collision detection
+    this.width = 101;
+    this.height = 171;
+
+    // Initialize bug at a random row
+    this.row = Math.floor(Math.random() * 3) + 1;
+    
+    // Background tiles are 83 pixels tall, offset sprite by
+    // constant amount to render it properly.  Offset sprite to
+    // left side of canvas (all images are 101 px wide).
+    this.x = 0 - this.width;
+    this.y = (this.row * 83) - 20;
+
+    // Enemy movement speed (x pixels per second)
+    this.speed = Math.floor(Math.random() * 200) + 50;
+
+    // Debug stuff
+    console.log("Enemy " + num + " created at row " + this.row);
+}
+
+// re-initialize enemy position
+Enemy.prototype.reset = function() {
+    this.x = -101;
+    this.row = Math.floor(Math.random() * 3) + 1;
+    this.y = (this.row * 83) - 20;
+    this.speed = Math.floor(Math.random() * 400) + 50;
 }
 
 // Update the enemy's position, required method for game
@@ -14,6 +41,15 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
+
+    // Debug output (chatty!)
+    // console.log("Enemy " + this.num + ": ("+this.x+","+this.y+")")    
+
+    // Speed is in pixels per second, so increase x by speed times fraction of a sec since last tick (dt)
+    this.x += (Math.floor(this.speed * dt));
+    if (this.x > ctx.canvas.width) {
+        this.reset();
+    }
 }
 
 // Draw the enemy on the screen, required method for game
@@ -26,32 +62,43 @@ Enemy.prototype.render = function() {
 // a handleInput() method.
 var Player = function() {
     this.sprite = 'images/char-boy.png';
+
+    // Width/height for collision detection
+    this.width = 101;
+    this.height = 171;
+
+    // Initialize player at center bottom of screen
     this.row = 5;
-    this.col = 2;
+    this.col = 2;    
 }
 Player.prototype.update = function(dt) {
-
+    // Transform column/row into pixels
+    this.x = this.col * 101;
+    this.y = this.row * 75;    
 }
 
 Player.prototype.render = function() {
-    x = this.col * 101;
-    y = this.row * 83
-    ctx.drawImage(Resources.get(this.sprite), x, y);
+    // Render image
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 
 Player.prototype.handleInput = function(keyCode) {
     switch(keyCode) {
         case 'left':
-            this.col -= 1;
+            if (this.col > 0)
+                this.col -= 1;
         break;
         case 'up':
-            this.row += 1;
+            if (this.row > 0)
+                this.row -= 1;
         break;
         case 'right':
-            this.col += 1;
+            if (this.col < 4)
+                this.col += 1;
         break;
         case 'down':
-            this.row -= 1;
+            if (this.row < 5)
+                this.row += 1;
         break;
     }
 }
@@ -62,7 +109,7 @@ Player.prototype.handleInput = function(keyCode) {
 var allEnemies = [];
 var numEnemies = 4;
 for (i=0; i < numEnemies; i++) {
-    allEnemies.push(new Enemy());
+    allEnemies.push(new Enemy(i));
 }
 var player = new Player();
 
