@@ -57,7 +57,7 @@ var Engine = (function(global) {
          * function again as soon as the browser is able to draw another frame.
          */
         win.requestAnimationFrame(main);
-    };
+    }
 
     /* This function does some initial setup that should only occur once,
      * particularly setting the lastTime variable that is required for the
@@ -80,6 +80,7 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
+        checkWater();
         checkCollisions();
     }
 
@@ -96,6 +97,16 @@ var Engine = (function(global) {
         });
         player.update();
     }
+
+    /*  Check if the player has made it to the water (won the game). If so,
+     *  call reset method.
+     */
+     function checkWater() {
+        if (player.row === 0) {
+            console.log("You won!");
+            player.reset();
+        }
+     }
 
     /*  Check for collisions between enemies and player.  Check if bug/player
      *  share same row then use width of bug/player (101px) to check for
