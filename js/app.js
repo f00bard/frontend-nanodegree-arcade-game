@@ -22,14 +22,14 @@ var Enemy = function(num) {
 Enemy.prototype.reset = function() {
     // Initialize bug at a random row
     this.row = Math.floor(Math.random() * 3) + 1;
-    
+
     // Background tiles are on a vertical grid of 84px, offset sprite by
     // constant amount to render it properly.  Offset sprite to
     // left side of canvas (all images are 101 px wide).
     this.x = 0 - 101;
     this.y = (this.row * 83) - 20;
 
-    // Enemy movement speed (pixels per second)    
+    // Enemy movement speed (pixels per second)
     this.speed = Math.floor(Math.random() * 300) + 75;
 
     // Debug output
@@ -44,7 +44,7 @@ Enemy.prototype.update = function(dt) {
     // all computers.
 
     // Debug output (chatty!)
-    // console.log("Enemy " + this.num + ": ("+this.x+","+this.y+")")    
+    // console.log("Enemy " + this.num + ": ("+this.x+","+this.y+")")
 
     // Speed is in pixels per second, so increase x by speed times
     // fraction of a sec since last tick (dt)
@@ -73,12 +73,13 @@ var Player = function() {
 Player.prototype.reset = function() {
     // Initialize player at center bottom of screen
     this.row = 5;
-    this.col = 2;    
+    this.col = 2;
 }
 Player.prototype.update = function(dt) {
     // Transform column/row into pixels
     this.x = this.col * 101;
-    this.y = (this.row * 83) - 20;    
+    // this.y = (this.row * 83) - 20;
+    this.y = (this.row * 83) - 35;
 }
 
 Player.prototype.render = function() {
