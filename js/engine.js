@@ -97,19 +97,23 @@ var Engine = (function(global) {
         player.update();
     }
 
-    /*  Check for collisions between enemies and player.  Using a rectangular
-     *  bounding box which isn't terribly accurate but is effective enough.
+    /*  Check for collisions between enemies and player.  Check if bug/player
+     *  share same row then use width of bug/player (101px) to check for
+     *  collision.  This is effectively a rectangular bounding box and close
+     *  enough for our purposes.
      */
     function checkCollisions() {
         allEnemies.forEach(function(enemy) {
-            if (player.x < enemy.x+enemy.width &&
-                player.x + player.width > enemy.x &&
-                player.y < enemy.y+enemy.height &&
-                player.y + player.height > enemy.y) {
-                console.log("Collision! Player ("+player.x+", "+player.y+") Enemy ("+enemy.x+", "+enemy.y+")");
+            if (player.row == enemy.row) {
+                if (player.x < enemy.x + 101 &&
+                    player.x + 101 > enemy.x) {
+                    console.log("Collision! Player (" + player.x + ", " + player.y + ") Enemy (" + enemy.x + ", " + enemy.y + ")");
+                    player.reset();
+                }
             }
         });
     }
+
 
     /* This function initially draws the "game level", it will then call
      * the renderEntities function. Remember, this function is called every

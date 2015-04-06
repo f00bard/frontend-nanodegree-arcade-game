@@ -7,32 +7,33 @@ var Enemy = function(num) {
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
 
-    // Width/height for collision detection
-    this.width = 101;
-    this.height = 171;
+    //
+    this.num = num;
 
+    // Initialize enemy
+    this.reset();
+
+    // Debug stuff
+    //console.log("Enemy " + num + " created at row " + this.row);
+}
+
+// Initialize enemy position/speed. This function called when
+// enemy is created as well as when it leaves the play area.
+Enemy.prototype.reset = function() {
     // Initialize bug at a random row
     this.row = Math.floor(Math.random() * 3) + 1;
     
-    // Background tiles are 83 pixels tall, offset sprite by
+    // Background tiles are on a vertical grid of 84px, offset sprite by
     // constant amount to render it properly.  Offset sprite to
     // left side of canvas (all images are 101 px wide).
-    this.x = 0 - this.width;
+    this.x = 0 - 101;
     this.y = (this.row * 83) - 20;
 
-    // Enemy movement speed (x pixels per second)
-    this.speed = Math.floor(Math.random() * 200) + 50;
+    // Enemy movement speed (pixels per second)    
+    this.speed = Math.floor(Math.random() * 300) + 75;
 
-    // Debug stuff
-    console.log("Enemy " + num + " created at row " + this.row);
-}
-
-// re-initialize enemy position
-Enemy.prototype.reset = function() {
-    this.x = -101;
-    this.row = Math.floor(Math.random() * 3) + 1;
-    this.y = (this.row * 83) - 20;
-    this.speed = Math.floor(Math.random() * 400) + 50;
+    // Debug output
+    console.log("Enemy ("+this.num+"): Row "+this.row+", Speed "+this.speed);
 }
 
 // Update the enemy's position, required method for game
@@ -45,8 +46,11 @@ Enemy.prototype.update = function(dt) {
     // Debug output (chatty!)
     // console.log("Enemy " + this.num + ": ("+this.x+","+this.y+")")    
 
-    // Speed is in pixels per second, so increase x by speed times fraction of a sec since last tick (dt)
+    // Speed is in pixels per second, so increase x by speed times
+    // fraction of a sec since last tick (dt)
     this.x += (Math.floor(this.speed * dt));
+
+    // Check if we left the play area
     if (this.x > ctx.canvas.width) {
         this.reset();
     }
@@ -63,10 +67,10 @@ Enemy.prototype.render = function() {
 var Player = function() {
     this.sprite = 'images/char-boy.png';
 
-    // Width/height for collision detection
-    this.width = 101;
-    this.height = 171;
-
+    // Initialize player position
+    this.reset();
+}
+Player.prototype.reset = function() {
     // Initialize player at center bottom of screen
     this.row = 5;
     this.col = 2;    
@@ -74,7 +78,7 @@ var Player = function() {
 Player.prototype.update = function(dt) {
     // Transform column/row into pixels
     this.x = this.col * 101;
-    this.y = this.row * 75;    
+    this.y = (this.row * 83) - 20;    
 }
 
 Player.prototype.render = function() {
