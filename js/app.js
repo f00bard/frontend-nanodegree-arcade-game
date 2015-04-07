@@ -2,12 +2,16 @@
 var Enemy = function(num) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
+    this.row = 0;
+    this.x = 0;
+    this.y = 0;
+    this.speed = 0;
 
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
 
-    //
+    // Enemy number is used for debug output
     this.num = num;
 
     // Initialize enemy
@@ -33,7 +37,7 @@ Enemy.prototype.reset = function() {
     this.speed = Math.floor(Math.random() * 300) + 75;
 
     // Debug output
-    console.log("Enemy ("+this.num+"): Row "+this.row+", Speed "+this.speed);
+    // console.log("Enemy ("+this.num+"): Row "+this.row+", Speed "+this.speed);
 };
 
 // Update the enemy's position, required method for game
@@ -65,16 +69,25 @@ Enemy.prototype.render = function() {
 // This class requires an update(), render() and
 // a handleInput() method.
 var Player = function() {
+    // Declare common object properties in prototype for performance and readability reasons
+    this.row = 0;
+    this.col = 0;
+    this.x = 0;
+    thix.y = 0;
+
+    // Graphic for player
     this.sprite = 'images/char-boy.png';
 
     // Initialize player position
     this.reset();
 };
+
 Player.prototype.reset = function() {
     // Initialize player at center bottom of screen
     this.row = 5;
     this.col = 2;
 };
+
 Player.prototype.update = function(dt) {
     // Transform column/row into pixels
     this.x = this.col * 101;
