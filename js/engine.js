@@ -79,9 +79,9 @@ var Engine = (function(global) {
      * on the entities themselves within your app.js file).
      */
     function update(dt) {
-        updateEntities(dt);
         checkWater();
         checkCollisions();
+        updateEntities(dt);
     }
 
     /* This is called by the update function  and loops through all of the
