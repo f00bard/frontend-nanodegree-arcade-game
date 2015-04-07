@@ -73,7 +73,7 @@ var Player = function() {
     this.row = 0;
     this.col = 0;
     this.x = 0;
-    thix.y = 0;
+    this.y = 0;
 
     // Graphic for player
     this.sprite = 'images/char-boy.png';
